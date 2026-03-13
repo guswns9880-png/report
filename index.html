@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>포차 매출 보고</title>
+
+<link rel="manifest" href="manifest.json">
+
+<style>
+
+body{
+font-family:sans-serif;
+margin:0;
+background:#f2f2f2
+}
+
+header{
+background:#111;
+color:white;
+padding:14px;
+text-align:center;
+font-size:18px
+}
+
+.container{
+padding:15px
+}
+
+.card{
+background:white;
+padding:15px;
+border-radius:8px;
+margin-bottom:10px
+}
+
+input{
+width:100%;
+padding:8px;
+margin-top:5px;
+margin-bottom:10px;
+border:1px solid #ddd;
+border-radius:6px;
+font-size:14px
+}
+
+button{
+width:100%;
+padding:12px;
+border:none;
+background:#111;
+color:white;
+font-size:15px;
+border-radius:6px
+}
+
+#result{
+white-space:pre-wrap;
+margin-top:15px;
+background:white;
+padding:15px;
+border-radius:8px;
+font-size:14px
+}
+
+.copy{
+margin-top:10px;
+background:#444
+}
+
+</style>
+</head>
+
+<body>
+
+<header>📊 포차 매출 보고 생성기</header>
+
+<div class="container">
+
+<div class="card">
+
+<label>금일 총매출</label>
+<input id="sales">
+
+<label>카드</label>
+<input id="card">
+
+<label>현금</label>
+<input id="cash">
+
+<label>계좌이체</label>
+<input id="transfer">
+
+<label>배달건수</label>
+<input id="delivery">
+
+<label>테이블 수</label>
+<input id="table">
+
+<label>소등시간</label>
+<input id="off">
+
+<label>네이버 리뷰</label>
+<input id="review">
+
+<button onclick="makeReport()">보고서 생성</button>
+
+</div>
+
+<div id="result"></div>
+
+<button class="copy" onclick="copyText()">복사하기</button>
+
+</div>
+
+<script>
+
+function comma(x){
+return Number(x).toLocaleString()
+}
+
+function makeReport(){
+
+const sales=Number(document.getElementById("sales").value||0)
+const card=Number(document.getElementById("card").value||0)
+const cash=Number(document.getElementById("cash").value||0)
+const transfer=Number(document.getElementById("transfer").value||0)
+const delivery=document.getElementById("delivery").value||0
+const table=Number(document.getElementById("table").value||0)
+const off=document.getElementById("off").value||""
+const review=document.getElementById("review").value||0
+
+const now=new Date()
+
+const month=now.getMonth()+1
+const day=now.getDate()
+
+const week=["일","월","화","수","목","금","토"]
+const today=week[now.getDay()]
+
+let alba=""
+
+if(today==="금" || today==="토"){
+alba="알바 : 구태이"
+}
+
+const unit=table?Math.floor(sales/table):0
+
+const text=`한사발포차 (일산식사점)
+
+${month}/${day} (${today})
+
+근무인원
+주방 : 배현준 서은하
+홀 : 배나영
+${alba}
+
+금일 총매출 : ${comma(sales)}
+카드 : ${comma(card)}
+현금 : ${comma(cash)}
+계좌이체 : ${comma(transfer)}
+
+배달 : ${delivery}건
+선결제 : 0원
+
+블로거(DM) : 0팀
+(0)#매출에 미포함#
+
+총 테이블수 : ${table}
+테이블 단가 : ${comma(unit)}
+
+특이사항
+1.고객컴플레인사항 : X
+2.고객만족사항 : X
+3.다음날 전달사항 : X
+4.지출내용 : X
+5.소등시간 : ${off}
+6.기타 : X
+7.웨이팅 : 0팀 / 이탈 : 0팀
+8.외국인 손님 : X
+9.네이버리뷰 : ${review}건
+
+이상 특이사항 없습니다
+`
+
+document.getElementById("result").textContent=text
+
+}
+
+function copyText(){
+
+const text=document.getElementById("result").textContent
+
+navigator.clipboard.writeText(text)
+
+alert("보고서 복사 완료")
+
+}
+
+if("serviceWorker" in navigator){
+navigator.serviceWorker.register("sw.js")
+}
+
+</script>
+
+</body>
+</html>
