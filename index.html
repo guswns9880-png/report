@@ -131,7 +131,11 @@ const table=Number(document.getElementById("table").value||0)
 const off=document.getElementById("off").value||""
 const review=document.getElementById("review").value||0
 
+
+// 날짜 하루 전날 표시
 const now=new Date()
+const todayDate=now.getDate()
+now.setDate(now.getDate()-1)
 
 const month=now.getMonth()+1
 const day=now.getDate()
@@ -139,13 +143,62 @@ const day=now.getDate()
 const week=["일","월","화","수","목","금","토"]
 const today=week[now.getDay()]
 
+
 let alba=""
 
-if(today==="금" || today==="토"){
+// 🔵 수정 1 : 알바 요일 (토,일)
+if(today==="토" || today==="일"){
 alba="알바 : 구태이"
 }
 
+
+// 테이블 단가
 const unit=table?Math.floor(sales/table):0
+
+
+// ======================
+// 월총매출 누적 시스템
+// ======================
+
+let savedMonth=localStorage.getItem("report_month")
+let monthTotal=Number(localStorage.getItem("month_total")||0)
+
+const currentMonth=(new Date()).getMonth()+1
+
+
+// 최초 기준값
+if(!savedMonth){
+
+monthTotal=20292100
+localStorage.setItem("month_total",monthTotal)
+localStorage.setItem("report_month",currentMonth)
+
+}
+else{
+
+// 🔵 수정 2 : 매달 2일에 초기화
+if(Number(savedMonth)!==currentMonth && todayDate>=2){
+
+monthTotal=0
+
+}
+
+}
+
+
+// 오늘 매출 누적
+monthTotal+=sales
+
+localStorage.setItem("month_total",monthTotal)
+localStorage.setItem("report_month",currentMonth)
+
+
+// ======================
+// 일평균 계산
+// ======================
+
+const avg=Math.floor(monthTotal/(todayDate-1))
+
 
 const text=`한사발포차 (일산식사점)
 
@@ -169,6 +222,8 @@ ${alba}
 
 총 테이블수 : ${table}
 테이블 단가 : ${comma(unit)}
+월총매출 : ${comma(monthTotal)}
+일평균 : ${comma(avg)}
 
 특이사항
 1.고객컴플레인사항 : X
