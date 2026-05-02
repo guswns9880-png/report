@@ -161,8 +161,7 @@ const unit=table?Math.floor(sales/table):0
 // ======================
 
 let savedMonth=localStorage.getItem("report_month")
-let monthTotal=0
-  // Number(localStorage.getItem("month_total")||0)
+let monthTotal=Number(localStorage.getItem("month_total")||0)
 
 const currentMonth=(new Date()).getMonth()+1
 
