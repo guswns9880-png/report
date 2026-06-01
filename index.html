@@ -167,14 +167,15 @@ const currentMonth=(new Date()).getMonth()+1
 
 
 // 최초 기준값
-if(!savedMonth){
+//if(!savedMonth){
 
-monthTotal=0
-localStorage.setItem("month_total",monthTotal)
-localStorage.setItem("report_month",currentMonth)
+//monthTotal=0
+//localStorage.setItem("month_total",monthTotal)
+//localStorage.setItem("report_month",currentMonth)
 
-}
-else{
+//}
+//else
+  {
 
 // 🔵 수정 2 : 매달 2일에 초기화
 if(Number(savedMonth)!==currentMonth && todayDate>=2){
