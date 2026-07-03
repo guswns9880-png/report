@@ -164,6 +164,7 @@ let savedMonth=localStorage.getItem("report_month")
 let monthTotal=Number(localStorage.getItem("month_total")||0)
 
 const currentMonth=(new Date()).getMonth()+1
+const resetMonth=localStorage.getItem("report_reset_month")
 
 
 // 최초 기준값
@@ -174,15 +175,14 @@ localStorage.setItem("month_total",monthTotal)
 localStorage.setItem("report_month",currentMonth)
 
 }
-else
-  {
 
-// 🔵 수정 2 : 매달 2일에 초기화
-if(Number(savedMonth)!==currentMonth && todayDate>=2){
+
+// 🔵 수정 2 : 매달 2일에 월총매출 0원으로 초기화
+if(todayDate===2 && Number(resetMonth)!==currentMonth){
 
 monthTotal=0
-
-}
+localStorage.setItem("month_total",monthTotal)
+localStorage.setItem("report_reset_month",currentMonth)
 
 }
 
