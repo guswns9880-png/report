@@ -144,12 +144,6 @@ const week=["일","월","화","수","목","금","토"]
 const today=week[now.getDay()]
 
 
-let alba=""
-
-// 🔵 수정 1 : 알바 요일 (토,일)
-if(today==="금" || today==="토"){
-alba="알바 : 구태이"
-}
 
 
 // 테이블 단가
@@ -208,7 +202,6 @@ ${month}/${day} (${today})
 근무인원
 주방 : 배현준 서은하
 홀 : 배나영
-${alba}
 
 금일 총매출 : ${comma(sales)}
 카드 : ${comma(card)}
